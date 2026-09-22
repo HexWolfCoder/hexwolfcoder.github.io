@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HexWolfCoder — исследователь кода</title>
+<meta name="description" content="Программист-энтузиаст, исследователь систем и программного кода.">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-2: #161b22;
+    --fg: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-2: #7ee787;
+    --coffee: #d2a679;
+    --border: #30363d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(88,166,255,0.08), transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(126,231,135,0.06), transparent 40%);
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(48,54,61,0.25) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(48,54,61,0.25) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 3rem 0 4rem;
+    animation: fadeUp 0.8s ease-out;
+  }
+
+  .avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    object-fit: cover;
+    box-shadow: 0 0 40px rgba(88,166,255,0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .avatar:hover {
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow: 0 0 60px rgba(88,166,255,0.5);
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-top: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 .accent { color: var(--accent); }
+
+  .hero .tagline {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.1em;
+    background: var(--accent-2);
+    vertical-align: text-bottom;
+    animation: blink 1s steps(2) infinite;
+    margin-left: 4px;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .badge {
+    padding: 0.4rem 0.9rem;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    transition: all 0.25s ease;
+  }
+
+  .badge:hover {
+    color: var(--fg);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(88,166,255,0.2);
+  }
+
+  .badge.coffee:hover { border-color: var(--coffee); box-shadow: 0 4px 12px rgba(210,166,121,0.25); }
+
+  /* ===== СЕКЦИИ ===== */
+  section {
+    margin-top: 4rem;
+    animation: fadeUp 0.8s ease-out backwards;
+  }
+
+  section:nth-of-type(2) { animation-delay: 0.1s; }
+  section:nth-of-type(3) { animation-delay: 0.2s; }
+  section:nth-of-type(4) { animation-delay: 0.3s; }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  h2::before {
+    content: '';
+    width: 4px;
+    height: 1.3rem;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .about p { color: var(--muted); margin-bottom: 1rem; }
+  .about strong { color: var(--fg); }
+  .about .hl { color: var(--accent-2); }
+
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .card:hover::after { transform: scaleX(1); }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .card .stack {
+    margin-top: 0.9rem;
+    font-size: 0.72rem;
+    color: var(--accent-2);
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== КОТИК ===== */
+  .cat-quote {
+    background: var(--bg-2);
+    border-left: 3px solid var(--coffee);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    color: var(--muted);
+    font-style: italic;
+    position: relative;
+  }
+
+  .cat-quote::before {
+    content: '🐱';
+    position: absolute;
+    top: -12px;
+    left: 16px;
+    font-size: 1.4rem;
+    font-style: normal;
+    background: var(--bg);
+    padding: 0 6px;
+  }
+
+  /* ===== ССЫЛКИ ===== */
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--fg);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.25s ease;
+  }
+
+  .link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 3rem 1.5rem 2rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--border);
+    margin-top: 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer .heart { color: var(--coffee); }
+
+  /* ===== ANIM ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <img class="avatar" src="avatar.png" alt="Аватар">
+    <h1>Привет, я <span class="accent">HexWolfCoder</span><span class="cursor"></span></h1>
+    <p class="tagline">программист-энтузиаст · исследователь систем и кода</p>
+
+    <div class="badges">
+      <span class="badge">⌨️ Low-level</span>
+      <span class="badge">🔍 Reverse Engineering</span>
+      <span class="badge">🐧 Linux</span>
+      <span class="badge">⚙️ Systems</span>
+      <span class="badge coffee">☕ Coffee-driven</span>
+      <span class="badge">🐱 Cat person</span>
+    </div>
+  </header>
+
+  <!-- О СЕБЕ -->
+  <section class="about">
+    <h2>О себе</h2>
+    <p>Копаюсь в <strong>исходниках</strong>, разбираю <span class="hl">чужие системы</span> и собираю свои. Люблю, когда код понятен до последнего байта, а архитектура — до последней абстракции.</p>
+    <p>Пишу утилиты, исследую протоколы, читаю ассемблер на ночь. Верю, что <strong>лучший способ понять систему — сломать её и починить заново</strong>.</p>
+    <p>Когда не в терминале — варю кофе, глажу кота и думаю о следующем проекте.</p>
+  </section>
+
+  <!-- ПРОЕКТЫ -->
+  <section>
+    <h2>Проекты</h2>
+    <div class="projects">
+      <!--<a class="card" href="#">
+        <h3>KernelMonitor</h3>
+        <p>Визуализация состояния ядра в реальном времени.</p>
+        <div class="stack">C · Python · GTK</div>
+      </a>-->
+      <a class="card" href="#">
+        <h3>ShellScripts</h3>
+        <p>набор полезных и не очень shell скриптов</p>
+        <div class="stack">Shell · Bash </div>
+      </a>
+    </div>
+  <!-- КОТИК -->
+  <section>
+    <h2>Заметка на полях</h2>
+    <div class="cat-quote">
+      «Любой достаточно сложный баг неотличим от фичи. Любой достаточно сытый кот неотличим от системного администратора.»
+    </div>
+  </section>
+
+  <!-- ССЫЛКИ -->
+  <section>
+    <h2>Где меня найти</h2>
+    <div class="links">
+      <a class="link" href="https://github.com/HexWolfCoder">🐙 GitHub</a>
+      <!--<a class="link" href="https://t.me/username">✈️ Telegram</a>
+      <a class="link" href="mailto:you@example.com">✉️ Email</a>
+      <a class="link" href="/blog">📝 Блог</a>-->
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Сделано с <span class="heart">♥</span> и большим количеством кофе</p>
+  <p style="margin-top:0.5rem">© <span id="year"></span> Имя Фамилия</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // печатающая машинка для tagline
+  const tagline = document.querySelector('.tagline');
+  const text = tagline.textContent;
+  tagline.textContent = '';
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      tagline.textContent += text[i++];
+      setTimeout(type, 40);
+    }
+  }
+  setTimeout(type, 600);
+</script>
+
+</body>
+</html>
